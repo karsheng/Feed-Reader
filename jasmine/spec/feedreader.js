@@ -53,17 +53,20 @@ $(function() {
 
     /* TODO: Write a new test suite named "The menu" */
     describe('The menu', function() {
-        var hidden;
-
-        beforeEach(function() {
-          hidden = $('body').hasClass('menu-hidden');
-        });
         /* TODO: Write a test that ensures the menu element is
          * hidden by default. You'll have to analyze the HTML and
          * the CSS to determine how we're performing the
          * hiding/showing of the menu element.
          */
+
+         // NOTE: App toggles .menu-hidden to hide/unhide the menu from the body.
+         var hidden;
+         beforeEach(function() {
+           hidden = $('body').hasClass('menu-hidden');
+         });
+
          it('is hidden by default', function() {
+           // expect body has the class of .menu-hidden, which hides the menu.
            expect(hidden).toBe(true);
          });
          /* TODO: Write a test that ensures the menu changes
@@ -72,11 +75,27 @@ $(function() {
           * clicked and does it hide when clicked again.
           */
 
-          it('menu changes visibility when clicked', function() {
+          it('menu visible when clicked', function() {
+            // ensure menu is hidden
+            if (!hidden) {
+                $('body').addClass('menu-hidden');
+            }
+            // click on the menu
+            $('.menu-icon-link').trigger('click');
 
-            $('.menu-icon-link').trigger('click');
+            // expect the .menu-hidden to be removed i.e. menu visible
             expect($('body').hasClass('menu-hidden')).not.toBe(true);
+          });
+
+          it('menu hidden when clicked', function() {
+            // ensure menu is visible
+            if (hidden) {
+                $('body').removeClass('menu-hidden');
+            }
+            // click on the menu
             $('.menu-icon-link').trigger('click');
+
+            // expect the .menu-hidden to be present i.e. menu hidden
             expect($('body').hasClass('menu-hidden')).toBe(true);
           });
     });
@@ -95,6 +114,7 @@ $(function() {
          });
 
          it('loadFeed function is called and completed: at least a single .entry element within the .feed container.', function(done) {
+           // expects to find content in the .entry element in the .feed container
            expect($('.feed').find('.entry').length).not.toBe(0);
            done();
          });
@@ -108,6 +128,7 @@ $(function() {
          var oldFeed;
          var newFeed;
 
+         // load two different feeds
          beforeEach(function(done){
            loadFeed(0, function() {
              oldFeed = $('.feed').html();
@@ -118,7 +139,7 @@ $(function() {
            });
          });
 
-
+         // when loadFeed() finished loading asynchronously, expect oldFeed to not be equal to newFeed
          it('content changes when a new feed is loaded', function(done) {
            expect(oldFeed).not.toEqual(newFeed);
            done();
